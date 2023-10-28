@@ -3,13 +3,15 @@ import axios from 'axios'
 import BackButton from '../components/BackButton'
 import Spinner from '../components/Spinner'
 import { useNavigate } from 'react-router-dom'
-
+import { useSnackbar } from 'notistack'
 const CreateBook = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [publishYear, setPublishYear] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate=useNavigate()
+  const {enqueueSnackbar}=useSnackbar()
+
   const hadelSaveBtton=()=>{
     const data ={
       title,
@@ -21,11 +23,13 @@ const CreateBook = () => {
     .post("http://localhost:5555/books",data)
     .then(()=>{
       setLoading(false)
+      enqueueSnackbar('book created suuceesfully',{variant:'success'})
       navigate('/')
     })
     .catch((error)=>{
       setLoading(false)
-      alert('an error')
+      // alert('an error')
+      enqueueSnackbar('error',{variant:'error'})
       console.log(error);
 
     })
